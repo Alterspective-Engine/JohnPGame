@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 COPY src/client/package.json ./src/client/
 COPY src/server/package.json ./src/server/
-RUN npm install --workspace=src/client
+RUN npm install --workspace=src/client --include=dev
 COPY src/client/ ./src/client/
 # Pass build-time args for Vite env vars
 ARG VITE_AZURE_TENANT_ID
