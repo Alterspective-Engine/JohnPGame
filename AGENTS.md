@@ -14,9 +14,9 @@ Global rules from `C:\GitHub\AGENTS.md` apply here. This file is the canonical i
 Before doing anything else:
 
 1. Read `C:\GitHub\LearnSD\GeneralKB\Internal\CLAUDE.md` (Internal CLAUDE.md — company-wide rules)
-2. Read the standards index for this project's domain:
-   - **Web App Development**: `C:\GitHub\GPTPrompts\prompts\web-app-development\standards\index.md`
-   - Read the **Task-Based Routing** section in `index.md` to find the right standards for your current task.
+2. Read the standards index: `C:\GitHub\Alterspective-Intelligence\Principles\Web\standards\index.md`
+   - Use the **Task-Based Routing** table to find the right standards files for your current task
+   - All standards files are under `C:\GitHub\Alterspective-Intelligence\Principles\Web\standards\`
 <!-- AIO:END managed/read-first -->
 
 <!-- AIO:BEGIN managed/company-values -->
@@ -108,24 +108,22 @@ See `ETHICS-STANDARDS.md` for the full ethics framework.
 
 ## Standards Compliance (MANDATORY)
 
-- **Read C:\GitHub\LearnSD\GeneralKB\Internal\CLAUDE.md first**
+All standards files live at: `C:\GitHub\Alterspective-Intelligence\Principles\Web\standards\`
 
-### Standards Domains
+Always apply regardless of task: `SECURITY-STANDARDS.md`, `GIT-STANDARDS.md`, `COMPANY-VALUES-STANDARDS.md`, `ETHICS-STANDARDS.md`
 
-#### Web App Development
-- Path: `C:\GitHub\GPTPrompts\prompts\web-app-development\standards\`
-- Read the **Task-Based Routing** section in `index.md` to find the right standards for your current task.
-- Always-apply: SECURITY-STANDARDS.md, GIT-STANDARDS.md, COMPANY-VALUES-STANDARDS.md, ETHICS-STANDARDS.md
+### Quick Routing
 
-### Quick Routing (see `index.md` in each domain for complete routing)
+| Task | Standards to read |
+|------|-------------------|
+| Building a web feature | `ARCHITECTURE-STANDARDS.md`, `CODING-STANDARDS.md` |
+| Building or consuming an API | `API-STANDARDS.md`, `CODING-STANDARDS.md` |
+| Auth / security changes | `SECURITY-STANDARDS.md`, `CODING-STANDARDS.md` |
+| Deploying or operating infrastructure | `DEVOPS-STANDARDS.md`, `ENVIRONMENT-STANDARDS.md` |
+| Writing or modifying tests | `TESTING-STANDARDS.md` |
+| Setting up a project or repository | `STARTUP-STANDARDS.md`, `GIT-STANDARDS.md`, `GITHUB-STANDARDS.md` |
 
-| Task Type | Domain | Start Reading |
-|-----------|--------|---------------|
-| Building a web feature | Web App Development | ARCHITECTURE-STANDARDS.md, CODING-STANDARDS.md |
-| Building or consuming an API | Web App Development | API-STANDARDS.md, CODING-STANDARDS.md |
-| Setting up a project or repository | Web App Development | STARTUP-STANDARDS.md, GIT-STANDARDS.md, GITHUB-STANDARDS.md, WORK-TRACKING-STANDARDS.md |
-| Deploying or operating infrastructure | Web App Development | DEVOPS-STANDARDS.md, ENVIRONMENT-STANDARDS.md, PRODUCTION-DEPLOYMENT-ENFORCEMENT.md |
-| Reviewing or designing CI/CD and release automation | Web App Development | CICD-REVIEW-PLAN.md, DEVOPS-STANDARDS.md, GITHUB-STANDARDS.md |
+> For the full routing table, read the index: `C:\GitHub\Alterspective-Intelligence\Principles\Web\standards\index.md`
 <!-- AIO:END managed/standards-compliance -->
 
 <!-- AIO:BEGIN managed/standards-decision-tree -->
@@ -133,43 +131,28 @@ See `ETHICS-STANDARDS.md` for the full ethics framework.
 
 ## Standards Decision Tree
 
-Use this tree to determine which standards to read for your current task.
-Start at Step 1 and follow the arrows.
+All paths below are relative to `C:\GitHub\Alterspective-Intelligence\Principles\Web\standards\`.
 
 ```
-Step 1: What kind of work are you doing?
+What are you doing?
 
-  [Writing or modifying code?]
-    |
-    +-- YES --> What layer?
-    |     |
-    |     +-- UI/Frontend ---------> UX-UI-STANDARDS.md + CODING-STANDARDS.md
-    |     +-- API/Backend ---------> API-STANDARDS.md + CODING-STANDARDS.md
-    |     +-- CLI -----------------> CLI-UX-STANDARDS.md + CODING-STANDARDS.md
-    |     +-- Database/Models -----> ARCHITECTURE-STANDARDS.md
-    |     +-- Auth/Security -------> SECURITY-STANDARDS.md + CODING-STANDARDS.md
-    |     +-- Tests ---------------> TESTING-STANDARDS.md
-    |     +-- AI/LLM Integration --> AI-LLM-INTEGRATION-STANDARDS.md
-    |
-    +-- NO --> Non-code work?
-          |
-          +-- Setting up a project -----> STARTUP-STANDARDS.md + GIT-STANDARDS.md + GITHUB-STANDARDS.md + WORK-TRACKING-STANDARDS.md
-          +-- Deploying/DevOps ---------> DEVOPS-STANDARDS.md + ENVIRONMENT-STANDARDS.md + PRODUCTION-DEPLOYMENT-ENFORCEMENT.md
-          +-- Reviewing CI/CD ----------> CICD-REVIEW-PLAN.md + DEVOPS-STANDARDS.md + GITHUB-STANDARDS.md
-          +-- Reviewing code -----------> CODING-STANDARDS.md + TESTING-STANDARDS.md
-          +-- Tracking work/status -----> WORK-TRACKING-STANDARDS.md + docs/implementation/REGISTER.md
-          +-- Writing documentation ----> docs/implementation/REGISTER.md + docs/governance/
-          +-- Creating/renaming files --> docs/governance/FILE-NAMING.md
-          +-- Restructuring folders ----> docs/governance/FOLDER-STRUCTURE.md
+  Writing or modifying code?
+    UI/Frontend      → UX-UI-STANDARDS.md + CODING-STANDARDS.md
+    API/Backend      → API-STANDARDS.md + CODING-STANDARDS.md
+    Auth/Security    → SECURITY-STANDARDS.md + CODING-STANDARDS.md
+    Database/Models  → ARCHITECTURE-STANDARDS.md
+    Tests            → TESTING-STANDARDS.md
 
-Step 2: ALWAYS also check
-  +-- SECURITY-STANDARDS.md (if touching auth, data, or external APIs)
-  +-- GIT-STANDARDS.md (if committing code)
-  +-- docs/governance/ (if creating files, folders, or documents)
-  +-- docs/implementation/REGISTER.md (if updating plans, status, or delivery packets)
+  Non-code work?
+    Deploying        → DEVOPS-STANDARDS.md + ENVIRONMENT-STANDARDS.md
+    Reviewing code   → CODING-STANDARDS.md + TESTING-STANDARDS.md
+    Creating files   → docs/governance/FILE-NAMING.md (in this repo)
+    Work tracking    → WORK-TRACKING-STANDARDS.md + docs/implementation/REGISTER.md (in this repo)
+
+  Always also read:
+    SECURITY-STANDARDS.md   (touching auth, data, or external APIs)
+    GIT-STANDARDS.md        (before committing)
 ```
-
-**Rule**: When in doubt, read the standard. Over-reading is better than under-reading.
 <!-- AIO:END managed/standards-decision-tree -->
 
 <!-- AIO:BEGIN managed/project-governance -->
@@ -240,6 +223,61 @@ This project has strict governance rules. **Read before creating any files or fo
 | Input validation | Zod |
 | Deployment | Docker + nginx + Coolify |
 <!-- AIO:END managed/tech-stack -->
+
+<!-- AIO:BEGIN managed/local-dev -->
+---
+
+## Local Development
+
+### Prerequisites
+- Node.js 20+
+- npm 9+ (workspaces support)
+
+### Setup
+
+```bash
+# 1. Install all dependencies (both workspaces)
+npm install
+
+# 2. Create .env in repo root (gitignored)
+cp .env.example .env
+# Fill in VITE_AZURE_CLIENT_ID, VITE_AZURE_TENANT_ID, VITE_REDIRECT_URI=http://localhost:5173
+
+# 3. Start both client and server in watch mode
+npm run dev
+```
+
+**Client** runs at `http://localhost:5173` (Vite HMR).
+**Server** runs at `http://localhost:3001` (tsx watch).
+Vite proxies `/api/*` → `http://localhost:3001` in dev mode.
+
+### Required `.env` Variables
+
+| Variable | Where set | Example |
+|---|---|---|
+| `VITE_AZURE_CLIENT_ID` | `.env` (dev) / Coolify build arg (prod) | `5e73306b-55a0-4aa6-88d6-f94850ccbd8b` |
+| `VITE_AZURE_TENANT_ID` | `.env` (dev) / Coolify build arg (prod) | `b73d8804-6b4d-40ef-a514-81d4f3ce65b9` |
+| `VITE_REDIRECT_URI` | `.env` (dev) / Coolify build arg (prod) | `http://localhost:5173` (dev) |
+| `AZURE_CLIENT_ID` | `.env` (dev) / Coolify env (prod) | same as `VITE_AZURE_CLIENT_ID` |
+| `AZURE_TENANT_ID` | `.env` (dev) / Coolify env (prod) | same as `VITE_AZURE_TENANT_ID` |
+| `CORS_ORIGIN` | `.env` (dev) / Coolify env (prod) | `http://localhost:5173` (dev) |
+| `DATABASE_PATH` | optional — defaults to `./data/items.db` | `:memory:` for tests |
+
+### Running Tests
+
+```bash
+npm test --workspace=src/server
+```
+
+Tests use an in-memory SQLite database and mock the auth middleware.
+
+### TypeScript Check
+
+```bash
+npm run build --workspace=src/client   # tsc + vite build
+npm run build --workspace=src/server   # tsc
+```
+<!-- AIO:END managed/local-dev -->
 
 <!-- AIO:BEGIN managed/file-folder-conventions -->
 ---
@@ -323,7 +361,7 @@ docker-compose.yml          # Orchestrates client + server + sqlite_data volume
 - **Backend validates** with `audience: CLIENT_ID`, `issuer: https://login.microsoftonline.com/${TENANT_ID}/v2.0`, algorithm RS256.
 
 ### Testing
-- Auth middleware is mocked at the **module level** (`vi.mock('../../src/middleware/auth-middleware')`), not at the jwks-rsa/jsonwebtoken level — CJS interop in Vitest makes the latter unreliable.
+- Auth middleware is mocked at the **module level** (`vi.mock('../../src/server/src/middleware/auth-middleware')`), not at the jwks-rsa/jsonwebtoken level — CJS interop in Vitest makes the latter unreliable.
 - `DATABASE_PATH=':memory:'` must be set **before** importing `app` in tests; use `vi.stubEnv` or set `process.env` at module load time.
 - `VITEST=true` in env prevents `app.listen()` and `initDatabase()` from running at import time.
 <!-- AIO:END managed/ai-specific-rules -->
