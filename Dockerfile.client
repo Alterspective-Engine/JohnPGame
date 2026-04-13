@@ -3,6 +3,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json* ./
 COPY src/client/package.json ./src/client/
+COPY src/server/package.json ./src/server/
 RUN npm install --workspace=src/client
 COPY src/client/ ./src/client/
 # Pass build-time args for Vite env vars
