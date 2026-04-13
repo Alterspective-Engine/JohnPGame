@@ -217,6 +217,12 @@ This project has strict governance rules. **Read before creating any files or fo
 ## Project Overview
 
 - **Name**: JohnPGame
+- **Production URL**: https://johnpgame.alterspective.com.au
+- **GitHub**: https://github.com/Alterspective-Engine/JohnPGame
+- **Coolify project**: JohnPGame (app UUID: `l12m5elmnyj6s72wyz7f8r3c`)
+- **Azure App Registration**: `JohnPGame` — Client ID: `5e73306b-55a0-4aa6-88d6-f94850ccbd8b`
+- **Azure Tenant**: `b73d8804-6b4d-40ef-a514-81d4f3ce65b9` (alterspective.com.au)
+- **Purpose**: Simple authenticated list app — users log in via Azure Entra and maintain a personal list of items
 <!-- AIO:END managed/project-overview -->
 
 <!-- AIO:BEGIN managed/tech-stack -->
@@ -240,7 +246,37 @@ This project has strict governance rules. **Read before creating any files or fo
 
 ## File & Folder Conventions
 
-> To be determined during Architecture phase.
+```
+src/
+  client/                   # Vite + React SPA
+    src/
+      context/              # React context providers (AuthContext)
+      lib/                  # Utility modules (api-client.ts)
+      pages/                # Page components (LoginPage, ListPage)
+      msal-config.ts        # MSAL.js configuration
+      main.tsx              # App entry point
+      App.tsx               # Router + MsalProvider root
+  server/
+    src/
+      features/             # Feature slices — auth/ and items/
+        auth/               # auth-router.ts, user-repository.ts
+        items/              # items-router.ts, item-repository.ts, item-service.ts
+      middleware/           # auth-middleware.ts (JWT validation)
+      database.ts           # SQLite init (better-sqlite3)
+      index.ts              # Express app entry
+      types.ts              # Shared interfaces (User, Item, AuthRequest)
+config/
+  nginx.conf                # nginx config for client container
+tests/
+  api/                      # Vitest integration tests (auth.test.ts, items.test.ts)
+Dockerfile.client           # Multi-stage: Vite build → nginx serve
+Dockerfile.server           # Multi-stage: tsc compile → node run
+docker-compose.yml          # Orchestrates client + server + sqlite_data volume
+```
+
+- All TypeScript source lives under `src/client/src/` and `src/server/src/`
+- Feature code is co-located by domain under `features/` (router + repository + service in same folder)
+- Tests live in `tests/api/` at repo root (not inside `src/`)
 <!-- AIO:END managed/file-folder-conventions -->
 
 <!-- AIO:BEGIN managed/import-rules -->
@@ -248,7 +284,10 @@ This project has strict governance rules. **Read before creating any files or fo
 
 ## Import Rules
 
-> To be determined during Architecture phase.
+- **Client**: Use `import type` for type-only imports. Import React types from `'react'` directly (`import type { CSSProperties } from 'react'`), never from `'react'` as a namespace (`React.CSSProperties`). MSAL hooks from `@azure/msal-react`. Router from `react-router-dom`.
+- **Server**: Import `db` from `'../../database'` (singleton). Import types from `'../../types'`. Never import across the `client/` ↔ `server/` boundary.
+- **No barrel files** — import directly from the module file, not from an `index.ts` re-export.
+- **Path aliases**: none configured — use relative paths.
 <!-- AIO:END managed/import-rules -->
 
 <!-- AIO:BEGIN managed/code-quality-rules -->
@@ -256,7 +295,14 @@ This project has strict governance rules. **Read before creating any files or fo
 
 ## Code Quality Rules
 
-> To be determined during Architecture phase.
+- **TypeScript strict**: `tsc --noEmit` must pass with zero errors before committing.
+- **No `any`**: Use proper types or `unknown` with runtime narrowing.
+- **Zod at boundaries**: All external input (request bodies) validated with Zod at the route layer.
+- **No raw JWT claims returned to clients**: Auth routes must return DB-sourced values, not raw token claims.
+- **SQLite queries typed**: Use `db.prepare<[ParamType], RowType>(...)` generics on all queries.
+- **Rate limiting on all item routes**: `express-rate-limit` applied via `router.use(limiter)` before auth middleware.
+- **Item text**: trim before validation; reject empty string and anything over 500 chars.
+- **Tests**: run with `npm test --workspace=src/server`. Auth middleware is mocked at the module level (not at jwks-rsa/jsonwebtoken) to avoid CJS interop issues in Vitest.
 <!-- AIO:END managed/code-quality-rules -->
 
 <!-- AIO:BEGIN managed/ai-specific-rules -->
@@ -264,7 +310,22 @@ This project has strict governance rules. **Read before creating any files or fo
 
 ## AI-Specific Rules
 
-> To be determined during Architecture phase.
+### Docker / Coolify Deployment
+- **Never use `ports:` in docker-compose** — Coolify's Traefik owns port 80/443. Use `expose:` only.
+- **`NODE_ENV=production` strips devDependencies** — Coolify injects this as a build arg. All builder-stage `npm install` calls MUST include `--include=dev`, or `tsc`/`vite` will be missing (exit code 127).
+- **npm workspaces: all `package.json` files must be in build context** — even `Dockerfile.client` needs `COPY src/server/package.json ./src/server/` to satisfy workspace resolution.
+- **Coolify env vars for docker-compose**: use DELETE + POST (not PATCH). Domains via `docker_compose_domains`. Deploy via `GET /api/v1/deploy?uuid=...`.
+
+### Azure Entra
+- **Client ID** is stored in vault as `JOHNPGAME_AZURE_CLIENT_ID` (`johnpgame--johnpgame-azure-client-id`).
+- **App registration** was created via `az ad app create` + `az rest PATCH` (not MS Graph API — admin-automation SP lacks `Application.ReadWrite.All`).
+- **Token scope**: `${CLIENT_ID}/.default` — not a URL-based scope.
+- **Backend validates** with `audience: CLIENT_ID`, `issuer: https://login.microsoftonline.com/${TENANT_ID}/v2.0`, algorithm RS256.
+
+### Testing
+- Auth middleware is mocked at the **module level** (`vi.mock('../../src/middleware/auth-middleware')`), not at the jwks-rsa/jsonwebtoken level — CJS interop in Vitest makes the latter unreliable.
+- `DATABASE_PATH=':memory:'` must be set **before** importing `app` in tests; use `vi.stubEnv` or set `process.env` at module load time.
+- `VITEST=true` in env prevents `app.listen()` and `initDatabase()` from running at import time.
 <!-- AIO:END managed/ai-specific-rules -->
 
 <!-- AIO:BEGIN managed/footer -->
