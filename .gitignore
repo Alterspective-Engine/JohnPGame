@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# AI Office state
+.ai-office/agents/
+.ai-office/workflows/
+.ai-office/metrics/
+.ai-office/provider.json
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Test
+coverage/
+*.log
+
+# SQLite runtime data (persisted via Docker volume in production)
+data/
+*.db

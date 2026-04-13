@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+      args:
+        VITE_AZURE_TENANT_ID: ${VITE_AZURE_TENANT_ID}
+        VITE_AZURE_CLIENT_ID: ${VITE_AZURE_CLIENT_ID}
+        VITE_REDIRECT_URI: ${VITE_REDIRECT_URI}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-}
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    restart: unless-stopped
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      AZURE_TENANT_ID: ${AZURE_TENANT_ID}
+      AZURE_CLIENT_ID: ${AZURE_CLIENT_ID}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      DATABASE_PATH: /app/data/items.db
+    volumes:
+      - sqlite_data:/app/data
+    expose:
+      - "3001"
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
